@@ -1,0 +1,11 @@
+/Users/antenorlopezmay/Desktop/Antenor/Restaurant/restaurant-api/src/Services/SharedKernel/SharedKernel.lib/bin/Debug/net8.0/SharedKernel.lib.deps.json
+/Users/antenorlopezmay/Desktop/Antenor/Restaurant/restaurant-api/src/Services/SharedKernel/SharedKernel.lib/bin/Debug/net8.0/SharedKernel.lib.dll
+/Users/antenorlopezmay/Desktop/Antenor/Restaurant/restaurant-api/src/Services/SharedKernel/SharedKernel.lib/bin/Debug/net8.0/SharedKernel.lib.pdb
+/Users/antenorlopezmay/Desktop/Antenor/Restaurant/restaurant-api/src/Services/SharedKernel/SharedKernel.lib/obj/Debug/net8.0/SharedKernel.lib.GeneratedMSBuildEditorConfig.editorconfig
+/Users/antenorlopezmay/Desktop/Antenor/Restaurant/restaurant-api/src/Services/SharedKernel/SharedKernel.lib/obj/Debug/net8.0/SharedKernel.lib.AssemblyInfoInputs.cache
+/Users/antenorlopezmay/Desktop/Antenor/Restaurant/restaurant-api/src/Services/SharedKernel/SharedKernel.lib/obj/Debug/net8.0/SharedKernel.lib.AssemblyInfo.cs
+/Users/antenorlopezmay/Desktop/Antenor/Restaurant/restaurant-api/src/Services/SharedKernel/SharedKernel.lib/obj/Debug/net8.0/SharedKernel.lib.csproj.CoreCompileInputs.cache
+/Users/antenorlopezmay/Desktop/Antenor/Restaurant/restaurant-api/src/Services/SharedKernel/SharedKernel.lib/obj/Debug/net8.0/SharedKernel.lib.dll
+/Users/antenorlopezmay/Desktop/Antenor/Restaurant/restaurant-api/src/Services/SharedKernel/SharedKernel.lib/obj/Debug/net8.0/refint/SharedKernel.lib.dll
+/Users/antenorlopezmay/Desktop/Antenor/Restaurant/restaurant-api/src/Services/SharedKernel/SharedKernel.lib/obj/Debug/net8.0/SharedKernel.lib.pdb
+/Users/antenorlopezmay/Desktop/Antenor/Restaurant/restaurant-api/src/Services/SharedKernel/SharedKernel.lib/obj/Debug/net8.0/ref/SharedKernel.lib.dll
