@@ -33,3 +33,4 @@
 /Users/antenorlopezmay/Desktop/Antenor/Restaurant/restaurant-api/src/Services/MenuService/MenuService.API/obj/Debug/net8.0/ref/MenuService.API.dll
 /Users/antenorlopezmay/Desktop/Antenor/Restaurant/restaurant-api/src/Services/MenuService/MenuService.API/bin/Debug/net8.0/SharedKernel.lib.dll
 /Users/antenorlopezmay/Desktop/Antenor/Restaurant/restaurant-api/src/Services/MenuService/MenuService.API/bin/Debug/net8.0/SharedKernel.lib.pdb
+/Users/antenorlopezmay/Desktop/Antenor/Restaurant/restaurant-api/src/Services/MenuService/MenuService.API/obj/Debug/net8.0/MenuService.API.sourcelink.json

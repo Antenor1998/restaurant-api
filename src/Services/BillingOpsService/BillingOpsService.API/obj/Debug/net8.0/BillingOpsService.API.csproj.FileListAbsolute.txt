@@ -33,3 +33,4 @@
 /Users/antenorlopezmay/Desktop/Antenor/Restaurant/restaurant-api/src/Services/BillingOpsService/BillingOpsService.API/obj/Debug/net8.0/ref/BillingOpsService.API.dll
 /Users/antenorlopezmay/Desktop/Antenor/Restaurant/restaurant-api/src/Services/BillingOpsService/BillingOpsService.API/bin/Debug/net8.0/SharedKernel.lib.dll
 /Users/antenorlopezmay/Desktop/Antenor/Restaurant/restaurant-api/src/Services/BillingOpsService/BillingOpsService.API/bin/Debug/net8.0/SharedKernel.lib.pdb
+/Users/antenorlopezmay/Desktop/Antenor/Restaurant/restaurant-api/src/Services/BillingOpsService/BillingOpsService.API/obj/Debug/net8.0/BillingOpsService.API.sourcelink.json

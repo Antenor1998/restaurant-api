@@ -41,3 +41,5 @@
 /Users/antenorlopezmay/Desktop/Antenor/Restaurant/restaurant-api/ApiGateway/bin/Debug/net8.0/Newtonsoft.Json.dll
 /Users/antenorlopezmay/Desktop/Antenor/Restaurant/restaurant-api/ApiGateway/bin/Debug/net8.0/Newtonsoft.Json.Bson.dll
 /Users/antenorlopezmay/Desktop/Antenor/Restaurant/restaurant-api/ApiGateway/bin/Debug/net8.0/Ocelot.dll
+/Users/antenorlopezmay/Desktop/Antenor/Restaurant/restaurant-api/ApiGateway/bin/Debug/net8.0/ocelot.json
+/Users/antenorlopezmay/Desktop/Antenor/Restaurant/restaurant-api/ApiGateway/obj/Debug/net8.0/ApiGateway.sourcelink.json

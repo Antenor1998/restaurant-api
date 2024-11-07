@@ -31,3 +31,4 @@
 /Users/antenorlopezmay/Desktop/Antenor/Restaurant/restaurant-api/src/Services/TenantService/TenantService.API/obj/Debug/net8.0/TenantService.API.pdb
 /Users/antenorlopezmay/Desktop/Antenor/Restaurant/restaurant-api/src/Services/TenantService/TenantService.API/obj/Debug/net8.0/TenantService.API.genruntimeconfig.cache
 /Users/antenorlopezmay/Desktop/Antenor/Restaurant/restaurant-api/src/Services/TenantService/TenantService.API/obj/Debug/net8.0/ref/TenantService.API.dll
+/Users/antenorlopezmay/Desktop/Antenor/Restaurant/restaurant-api/src/Services/TenantService/TenantService.API/obj/Debug/net8.0/TenantService.API.sourcelink.json

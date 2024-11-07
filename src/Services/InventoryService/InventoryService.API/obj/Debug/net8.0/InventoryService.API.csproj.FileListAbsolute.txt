@@ -33,3 +33,4 @@
 /Users/antenorlopezmay/Desktop/Antenor/Restaurant/restaurant-api/src/Services/InventoryService/InventoryService.API/obj/Debug/net8.0/ref/InventoryService.API.dll
 /Users/antenorlopezmay/Desktop/Antenor/Restaurant/restaurant-api/src/Services/InventoryService/InventoryService.API/bin/Debug/net8.0/SharedKernel.lib.dll
 /Users/antenorlopezmay/Desktop/Antenor/Restaurant/restaurant-api/src/Services/InventoryService/InventoryService.API/bin/Debug/net8.0/SharedKernel.lib.pdb
+/Users/antenorlopezmay/Desktop/Antenor/Restaurant/restaurant-api/src/Services/InventoryService/InventoryService.API/obj/Debug/net8.0/InventoryService.API.sourcelink.json
