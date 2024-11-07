@@ -1,0 +1,90 @@
+# Archivos binarios de compilación
+bin/
+obj/
+out/
+
+# Dependencias de paquetes
+*.nuget
+*.nupkg
+*.snupkg
+packages/
+.vscode/
+
+# Archivos de configuración de usuario
+*.user
+*.vspscc
+*.vssscc
+*.suo
+
+# Configuración de VS Code
+.vscode/
+
+# Configuración de Visual Studio
+.vs/
+.vscode/
+.vscode-test/
+.vscode-server/
+.vscode-test
+test-results/
+
+# Archivos de Rider
+.idea/
+.idea_modules/
+
+# Archivos de configuración locales
+*.sln.docstates
+
+# Configuración del sistema operativo
+.DS_Store
+Thumbs.db
+ehthumbs.db
+
+# Logs
+*.log
+logs/
+LogFiles/
+*.tlog
+
+# Archivos temporales
+*.tmp
+*.temp
+*.cache
+*.bak
+*.swp
+*.swo
+~$*
+
+# Archivos de compilación de seguridad
+*.security.xml
+*.testdata
+
+# Archivos de cobertura de código
+*.coverage
+*.coveragexml
+*.opencover
+coverage-results/
+
+# Archivos generados por el compilador
+*.pdb
+*.dll
+*.exe
+*.so
+*.dylib
+
+# Configuración de configuración de contenedores
+Dockerfile*
+docker-compose*.yml
+
+# Publicación de archivos
+*.publishsettings
+*.publishproj
+
+# Configuración global de entorno
+.env
+.env.*
+
+# Archivos de dependencias externas
+.project.lock.json
+project.assets.json
+project.nuget.cache
+project.nuget.targets
