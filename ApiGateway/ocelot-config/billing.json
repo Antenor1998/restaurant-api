@@ -1,0 +1,38 @@
+{
+    "Routes": [
+        {
+            "DownstreamPathTemplate": "/api/{everything}",
+            "DownstreamScheme": "http",
+            "SwaggerKey": "BillingService",
+            "DownstreamHostAndPorts": [
+                {
+                    "Host": "localhost",
+                    "Port": 5002
+                }
+            ],
+            "UpstreamPathTemplate": "/api/billing/{everything}",
+            "UpstreamHttpMethod": [
+                "Get",
+                "Post",
+                "Put",
+                "Delete"
+            ],
+            "LoadBalancerOptions": {
+                "Type": "RoundRobin"
+            }
+        }
+    ],
+    "SwaggerEndPoints": [
+        {
+            "Key": "BillingService",
+        	"TransformByOcelotConfig": true,
+            "Config": [
+                {
+                    "Name": "BillingService API",
+                    "Version": "v1",
+                    "Url": "http://localhost:5002/swagger/v1/swagger.json"
+                }
+            ]
+        }
+    ]
+}
