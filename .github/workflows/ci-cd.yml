@@ -35,38 +35,50 @@ jobs:
       with:
         dotnet-version: '8.0.x'
 
-    # 3. Restore dependencies
-    - name: Restore dependencies
+    # 3. Restore dependencies for TenantService
+    - name: Restore dependencies for TenantService
       run: dotnet restore src/Services/TenantService/TenantService.API/TenantService.API.csproj
 
-    # 4. Build the projects
-    - name: Build projects
+    # 4. Restore dependencies for AnalyticsService
+    - name: Restore dependencies for AnalyticsService
+      run: dotnet restore src/Services/AnalyticsService/AnalyticsService.API/AnalyticsService.API.csproj
+
+    # 5. Build TenantService
+    - name: Build TenantService
       run: dotnet build src/Services/TenantService/TenantService.API/TenantService.API.csproj --no-restore
 
-    # 5. Run tests (opcional)
-    - name: Run tests
+    # 6. Build AnalyticsService
+    - name: Build AnalyticsService
+      run: dotnet build src/Services/AnalyticsService/AnalyticsService.API/AnalyticsService.API.csproj --no-restore
+
+    # 7. Run tests for TenantService (opcional)
+    - name: Run tests for TenantService
       run: dotnet test src/Services/TenantService/TenantService.API/TenantService.API.csproj
 
-    # 6. Build Docker images
-    # - name: Build AnalyticsService Docker image
-    #   run: docker build -t analytics-service src/Services/AnalyticsService/AnalyticsService.API
+    # 8. Run tests for AnalyticsService (opcional)
+    - name: Run tests for AnalyticsService
+      run: dotnet test src/Services/AnalyticsService/AnalyticsService.API/AnalyticsService.API.csproj
 
+    # 9. Build Docker images for both services
     - name: Build TenantService Docker image
       run: docker build -t tenant-service src/Services/TenantService/TenantService.API
 
-    # 7. Push Docker images to Docker Hub (opcional)
+    - name: Build AnalyticsService Docker image
+      run: docker build -t analytics-service src/Services/AnalyticsService/AnalyticsService.API
+
+    # 10. Push Docker images to Docker Hub (opcional)
     - name: Login to Docker Hub
       uses: docker/login-action@v2
       with:
         username: ${{ secrets.DOCKER_USERNAME }}
         password: ${{ secrets.DOCKER_PASSWORD }}
 
-    # - name: Push AnalyticsService Docker image
-    #   run: docker push ${{ secrets.DOCKER_USERNAME }}/analytics-service:latest
-
     - name: Push TenantService Docker image
       run: docker push ${{ secrets.DOCKER_USERNAME }}/tenant-service:latest
 
-    # 8. Deploy services using docker-compose
+    - name: Push AnalyticsService Docker image
+      run: docker push ${{ secrets.DOCKER_USERNAME }}/analytics-service:latest
+
+    # 11. Deploy services using docker-compose
     - name: Deploy with docker-compose
       run: docker-compose up -d --build
