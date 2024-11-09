@@ -66,10 +66,10 @@ services:
   analytics-service:
     build:
       context: .
-      dockerfile: .src/Services/AnalyticsService/AnalyticsService.API/Dockerfile
+      dockerfile: ./src/Services/AnalyticsService/AnalyticsService.API/Dockerfile
     container_name: analytics-service
     ports:
-      - "5003:5004"
+      - "5003:5003"
     depends_on:
       - consul
       - rabbitmq
@@ -78,7 +78,6 @@ services:
     networks:
       - my_network
     healthcheck:
-     test: ["CMD-SHELL", "curl -f http://tenant-service:5003/health || exit 1"]
      interval: 10s
      timeout: 5s
      retries: 5
