@@ -4,7 +4,7 @@ WORKDIR /src
 
 # Limpiar la caché de NuGet y configurar el feed
 RUN dotnet nuget locals --clear all
-RUN dotnet nuget add source https://api.nuget.org/v3/index.json
+
 
 # Copiar archivos .csproj y restaurar dependencias
 COPY src/Services/SharedKernel/SharedKernel.lib/SharedKernel.lib.csproj ./Services/SharedKernel/SharedKernel.lib/
