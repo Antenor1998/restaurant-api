@@ -24,13 +24,19 @@ public class ConsulHostedService : IHostedService {
 		var features = _server.Features.Get<IServerAddressesFeature>();
 		var address = (features?.Addresses.FirstOrDefault()) ?? throw new InvalidOperationException("No se pudo obtener una dirección para registrar el servicio en Consul.");
 
-	    var uri = new Uri(address);
-		_registrationId = $"{uri.Host}-{_servicePort}-{_serviceName}";
+		var uri = new Uri(address);
+		var ipAddress = uri.Host == "0.0.0.0" ? "localhost" : uri.Host;
+
+		Console.WriteLine($"[INFO] Registrando servicio en Consul en la dirección {ipAddress}");
+
+		_registrationId = $"{ipAddress}-{_servicePort}-{_serviceName}";
+		Console.WriteLine($"[INFO] Registrando servicio en Consul con ID {_registrationId}");
+
 
 		var registration = new AgentServiceRegistration {
 			ID = _registrationId,
 			Name = _serviceName,
-			Address = "127.0.0.1",
+			Address = ipAddress,
 			Port = _servicePort,
 			Tags = ["api"]
 		};
@@ -40,6 +46,8 @@ public class ConsulHostedService : IHostedService {
 		_lifetime.ApplicationStopping.Register(async () => {
 			await _consulClient.Agent.ServiceDeregister(_registrationId);
 		});
+
+		 Console.WriteLine($"Servicio registrado en Consul con ID {_registrationId}");
 	}
 
 	public Task StopAsync(CancellationToken cancellationToken) => Task.CompletedTask;

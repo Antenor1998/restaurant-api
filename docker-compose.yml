@@ -1,0 +1,85 @@
+version: '3.8'
+
+networks:
+  my_network:
+    driver: bridge
+
+services:
+  consul:
+    image: hashicorp/consul:1.20.1
+    container_name: consul
+    command: agent -dev -client=0.0.0.0
+    ports:
+      - "8500:8500"     # Interfaz web de Consul
+      - "8600:8600/udp" # DNS de Consul
+    networks:
+      - my_network
+    healthcheck:
+      test: ["CMD-SHELL", "curl -f http://tenant-service:5001/health || exit 1"]
+      interval: 10s
+      timeout: 5s
+      retries: 5
+    labels:
+      - "consul.service.name=consul"
+
+
+  rabbitmq:
+    image: rabbitmq:management
+    container_name: rabbitmq
+    environment:
+      RABBITMQ_DEFAULT_USER: guest
+      RABBITMQ_DEFAULT_PASS: guest
+    ports:
+      - "5672:5672"   # Puerto para la comunicación con RabbitMQ
+      - "15672:15672" # Interfaz web de RabbitMQ
+    networks:
+      - my_network
+    labels:
+      - "consul.service.name=rabbitmq"
+    healthcheck:
+      test: ["CMD", "rabbitmqctl", "status"]
+      interval: 10s
+      timeout: 5s
+      retries: 5
+
+  tenant-service:
+    build:
+      context: .
+      dockerfile: ./src/Services/TenantService/TenantService.API/Dockerfile
+    container_name: tenant-service
+    ports:
+      - "5001:5001"
+    depends_on:
+      - consul
+      - rabbitmq
+    environment:
+      - CONSUL_ADDRESS=http://consul:8500
+    networks:
+      - my_network
+    healthcheck:
+     test: ["CMD-SHELL", "curl -f http://tenant-service:5001/health || exit 1"]
+     interval: 10s
+     timeout: 5s
+     retries: 5
+     start_period: 30s
+
+  analytics-service:
+    build:
+      context: .
+      dockerfile: .src/Services/AnalyticsService/AnalyticsService.API/Dockerfile
+    container_name: analytics-service
+    ports:
+      - "5003:5004"
+    depends_on:
+      - consul
+      - rabbitmq
+    environment:
+      - CONSUL_ADDRESS=http://consul:8500
+    networks:
+      - my_network
+    healthcheck:
+     test: ["CMD-SHELL", "curl -f http://tenant-service:5003/health || exit 1"]
+     interval: 10s
+     timeout: 5s
+     retries: 5
+     start_period: 30s
