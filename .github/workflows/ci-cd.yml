@@ -52,13 +52,12 @@ jobs:
       run: dotnet restore
 
     # 6. Build TenantService Docker image
-+
     - name: Build TenantService Docker image
-      run: docker build -t ${{ secrets.DOCKER_USERNAME }}/tenant-service:latest -f src/Services/TenantService/TenantService.API/Dockerfile .
+      run: docker build -t tenant-service -f src/Services/TenantService/TenantService.API/Dockerfile .
 
     # 7. Build AnalyticsService Docker image
     - name: Build AnalyticsService Docker image
-      run: docker build -t ${{ secrets.DOCKER_USERNAME }}/analytics-service:latest -f src/Services/AnalyticsService/AnalyticsService.API/Dockerfile .
+      run: docker build -t analytics-service -f src/Services/AnalyticsService/AnalyticsService.API/Dockerfile .
 
     # 8. Login to Docker Hub
     - name: Docker Login
