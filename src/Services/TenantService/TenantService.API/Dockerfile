@@ -5,7 +5,6 @@ WORKDIR /src
 # Limpiar la caché de NuGet y configurar el feed
 RUN dotnet nuget locals --clear all
 
-
 # Copiar los archivos .csproj y restaurar las dependencias
 COPY ./src/Services/TenantService/TenantService.API/TenantService.API.csproj ./src/Services/TenantService/TenantService.API/
 RUN dotnet restore ./src/Services/TenantService/TenantService.API/TenantService.API.csproj
