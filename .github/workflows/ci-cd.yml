@@ -37,19 +37,19 @@ jobs:
 
     # 3. Restore dependencies
     - name: Restore dependencies
-      run: dotnet restore src/Services/**/**/*.csproj
+      run: dotnet restore src/Services/TenantService/TenantService.API/TenantService.API.csproj
 
     # 4. Build the projects
     - name: Build projects
-      run: dotnet build src/Services/**/**/*.csproj --no-restore
+      run: dotnet build src/Services/TenantService/TenantService.API/TenantService.API.csproj --no-restore
 
     # 5. Run tests (opcional)
     - name: Run tests
-      run: dotnet test src/Services/**/**/*.csproj
+      run: dotnet test src/Services/TenantService/TenantService.API/TenantService.API.csproj
 
     # 6. Build Docker images
-    - name: Build AnalyticsService Docker image
-      run: docker build -t analytics-service src/Services/AnalyticsService/AnalyticsService.API
+    # - name: Build AnalyticsService Docker image
+    #   run: docker build -t analytics-service src/Services/AnalyticsService/AnalyticsService.API
 
     - name: Build TenantService Docker image
       run: docker build -t tenant-service src/Services/TenantService/TenantService.API
@@ -61,8 +61,8 @@ jobs:
         username: ${{ secrets.DOCKER_USERNAME }}
         password: ${{ secrets.DOCKER_PASSWORD }}
 
-    - name: Push AnalyticsService Docker image
-      run: docker push ${{ secrets.DOCKER_USERNAME }}/analytics-service:latest
+    # - name: Push AnalyticsService Docker image
+    #   run: docker push ${{ secrets.DOCKER_USERNAME }}/analytics-service:latest
 
     - name: Push TenantService Docker image
       run: docker push ${{ secrets.DOCKER_USERNAME }}/tenant-service:latest
