@@ -3,11 +3,11 @@ FROM mcr.microsoft.com/dotnet/sdk:8.0 AS build
 WORKDIR /src
 
 # Copiar solo los archivos .csproj y restaurar las dependencias primero para aprovechar la caché de Docker
-COPY src/Services/AnalyticsService/AnalyticsService.API/AnalyticsService.API.csproj /src/Services/AnalyticsService/AnalyticsService.API/
-RUN dotnet restore /src/Services/AnalyticsService/AnalyticsService.API/AnalyticsService.API.csproj
+COPY ./src/Services/AnalyticsService/AnalyticsService.API/AnalyticsService.API.csproj ./Services/AnalyticsService/AnalyticsService.API/
+RUN dotnet restore ./Services/AnalyticsService/AnalyticsService.API/AnalyticsService.API.csproj
 
 # Copiar el resto del código fuente al contenedor
-COPY src/ /src/
+COPY ./src/ /src/
 
 # Establecer el directorio de trabajo y compilar la aplicación
 WORKDIR /src/Services/AnalyticsService/AnalyticsService.API
