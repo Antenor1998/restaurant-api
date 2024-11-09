@@ -12,7 +12,9 @@ COPY src/ /src/
 
 # Establecer el directorio de trabajo y compilar la aplicación
 WORKDIR /src/Services/TenantService/TenantService.API
+RUN dotnet build -c Release --no-restore
 RUN dotnet publish -c Release -o /app/publish --no-restore
+
 
 # Fase 2: Ejecución
 FROM mcr.microsoft.com/dotnet/aspnet:8.0 AS runtime
