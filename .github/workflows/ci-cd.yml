@@ -18,11 +18,13 @@ jobs:
         ports:
           - 5672:5672
           - 15672:15672
+        options: --health-cmd "rabbitmqctl status" --health-interval=10s --health-timeout=5s --health-retries=5
 
       consul:
         image: hashicorp/consul:1.20.1
         ports:
           - 8500:8500
+        options: --health-cmd "curl -f http://localhost:8500/v1/status/leader || exit 1" --health-interval=10s --health-timeout=5s --health-retries=5
 
     steps:
     # 1. Checkout the code from the repository
@@ -35,38 +37,56 @@ jobs:
       with:
         dotnet-version: '8.0.x'
 
-    # 3. Restore dependencies for TenantService
+    # 3. Clear NuGet cache to avoid package restore issues
+    - name: Clear NuGet cache
+      run: dotnet nuget locals --clear all
+
+    # 4. Restore dependencies for TenantService
     - name: Restore dependencies for TenantService
       working-directory: src/Services/TenantService/TenantService.API
       run: dotnet restore
 
-    # 4. Restore dependencies for AnalyticsService
+    # 5. Restore dependencies for AnalyticsService
     - name: Restore dependencies for AnalyticsService
       working-directory: src/Services/AnalyticsService/AnalyticsService.API
       run: dotnet restore
 
-    # 5. Build TenantService Docker image
+    # 6. Build TenantService Docker image
     - name: Build TenantService Docker image
       run: docker build -t tenant-service -f src/Services/TenantService/TenantService.API/Dockerfile .
 
-    # 6. Build AnalyticsService Docker image
+    # 7. Build AnalyticsService Docker image
     - name: Build AnalyticsService Docker image
       run: docker build -t analytics-service -f src/Services/AnalyticsService/AnalyticsService.API/Dockerfile .
 
-    # 7. Login to Docker Hub
+    # 8. Login to Docker Hub
     - name: Login to Docker Hub
       uses: docker/login-action@v2
       with:
         username: ${{ secrets.DOCKER_USERNAME }}
         password: ${{ secrets.DOCKER_PASSWORD }}
 
-    # 8. Push Docker images to Docker Hub
+    # 9. Push Docker images to Docker Hub
     - name: Push TenantService Docker image
       run: docker push ${{ secrets.DOCKER_USERNAME }}/tenant-service:latest
 
     - name: Push AnalyticsService Docker image
       run: docker push ${{ secrets.DOCKER_USERNAME }}/analytics-service:latest
 
-    # 9. Deploy with docker-compose
+    # 10. Deploy with docker-compose
     - name: Deploy with docker-compose
-      run: docker-compose up -d --build
+      env:
+        CONSUL_ADDRESS: "http://localhost:8500"
+      run: |
+        docker-compose -f docker-compose.yml up -d --build
+
+    # 11. Health check for services
+    - name: Health check for TenantService
+      run: |
+        sleep 30
+        curl -f http://localhost:5001/health || exit 1
+
+    - name: Health check for AnalyticsService
+      run: |
+        sleep 30
+        curl -f http://localhost:5003/health || exit 1
