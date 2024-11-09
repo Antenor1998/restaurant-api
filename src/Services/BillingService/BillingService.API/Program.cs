@@ -1,43 +1,38 @@
-using Microsoft.OpenApi.Models;
+using Consul;
+using Microsoft.AspNetCore.Hosting.Server;
+using SharedKernel.lib.Services;
 
 var builder = WebApplication.CreateBuilder(args);
 
-// Add services to the container.
-// Learn more about configuring Swagger/OpenAPI at https://aka.ms/aspnetcore/swashbuckle
+// Configura la dirección de escucha explícitamente
+builder.WebHost.UseUrls("http://localhost:5002");
+
+// Configura Consul
+builder.Services.AddSingleton<IConsulClient, ConsulClient>(p => new ConsulClient(cfg => {
+	cfg.Address = new Uri("http://127.0.0.1:8500");
+}));
+
+builder.Services.AddControllers();
 builder.Services.AddEndpointsApiExplorer();
-builder.Services.AddSwaggerGen(c => {
-});
+builder.Services.AddSwaggerGen();
 
 var app = builder.Build();
 
+
+var consulClient = app.Services.GetRequiredService<IConsulClient>();
+var server       = app.Services.GetRequiredService<IServer>();
+var lifetime     = app.Services.GetRequiredService<IHostApplicationLifetime>();
+
+app.Services.GetRequiredService<IHostApplicationLifetime>()
+	.ApplicationStarted.Register(() => {
+		var consulHostedService = new ConsulHostedService(consulClient, server, lifetime, "BillingService", 5002);
+		consulHostedService.StartAsync(default).GetAwaiter().GetResult();
+	});
+
+// Agrega servicios y middlewares
 app.UseSwagger();
 app.UseSwaggerUI();
-
 app.UseHttpsRedirection();
-
-var summaries = new[]
-{
-    "Freezing", "Bracing", "Chilly", "Cool", "Mild", "Warm", "Balmy", "Hot", "Sweltering", "Scorching"
-};
-
-app.MapGet("/weatherforecast", () =>
-{
-    var forecast =  Enumerable.Range(1, 5).Select(index =>
-        new WeatherForecast
-        (
-            DateOnly.FromDateTime(DateTime.Now.AddDays(index)),
-            Random.Shared.Next(-20, 55),
-            summaries[Random.Shared.Next(summaries.Length)]
-        ))
-        .ToArray();
-    return forecast;
-})
-.WithName("GetWeatherForecast")
-.WithOpenApi();
+app.MapControllers();
 
 app.Run();
-
-record WeatherForecast(DateOnly Date, int TemperatureC, string? Summary)
-{
-    public int TemperatureF => 32 + (int)(TemperatureC / 0.5556);
-}

@@ -9,16 +9,106 @@
         "LoadBalancerOptions": {
           "Type": "RoundRobin"
         }
+      },
+      {
+        "DownstreamPathTemplate": "/api/{everything}",
+        "DownstreamScheme": "http",
+        "ServiceName": "BillingService",
+        "UpstreamPathTemplate": "/api/billing/{everything}",
+        "UpstreamHttpMethod": [ "Get", "Post", "Put", "Delete" ],
+        "LoadBalancerOptions": {
+          "Type": "RoundRobin"
+        }
+      },
+      {
+        "DownstreamPathTemplate": "/api/{everything}",
+        "DownstreamScheme": "http",
+        "ServiceName": "AnalyticsService",
+        "UpstreamPathTemplate": "/api/analytics/{everything}",
+        "UpstreamHttpMethod": [ "Get", "Post", "Put", "Delete" ],
+        "LoadBalancerOptions": {
+          "Type": "RoundRobin"
+        }
+      },
+      {
+        "DownstreamPathTemplate": "/api/{everything}",
+        "DownstreamScheme": "http",
+        "ServiceName": "AuthService",
+        "UpstreamPathTemplate": "/api/auth/{everything}",
+        "UpstreamHttpMethod": [ "Get", "Post", "Put", "Delete" ],
+        "LoadBalancerOptions": {
+          "Type": "RoundRobin"
+        }
+      },
+      {
+        "DownstreamPathTemplate": "/api/{everything}",
+        "DownstreamScheme": "http",
+        "ServiceName": "BillingOpsService",
+        "UpstreamPathTemplate": "/api/billingOps/{everything}",
+        "UpstreamHttpMethod": [ "Get", "Post", "Put", "Delete" ],
+        "LoadBalancerOptions": {
+          "Type": "RoundRobin"
+        }
+      },
+      {
+        "DownstreamPathTemplate": "/api/{everything}",
+        "DownstreamScheme": "http",
+        "ServiceName": "InventoryService",
+        "UpstreamPathTemplate": "/api/inventory/{everything}",
+        "UpstreamHttpMethod": [ "Get", "Post", "Put", "Delete" ],
+        "LoadBalancerOptions": {
+          "Type": "RoundRobin"
+        }
+      },
+      {
+        "DownstreamPathTemplate": "/api/{everything}",
+        "DownstreamScheme": "http",
+        "ServiceName": "MenuService",
+        "UpstreamPathTemplate": "/api/menu/{everything}",
+        "UpstreamHttpMethod": [ "Get", "Post", "Put", "Delete" ],
+        "LoadBalancerOptions": {
+          "Type": "RoundRobin"
+        }
+      },
+      {
+        "DownstreamPathTemplate": "/api/{everything}",
+        "DownstreamScheme": "http",
+        "ServiceName": "NotificationService",
+        "UpstreamPathTemplate": "/api/notification/{everything}",
+        "UpstreamHttpMethod": [ "Get", "Post", "Put", "Delete" ],
+        "LoadBalancerOptions": {
+          "Type": "RoundRobin"
+        }
+      },
+      {
+        "DownstreamPathTemplate": "/api/{everything}",
+        "DownstreamScheme": "http",
+        "ServiceName": "OrderService",
+        "UpstreamPathTemplate": "/api/order/{everything}",
+        "UpstreamHttpMethod": [ "Get", "Post", "Put", "Delete" ],
+        "LoadBalancerOptions": {
+          "Type": "RoundRobin"
+        }
+      },
+      {
+        "DownstreamPathTemplate": "/api/{everything}",
+        "DownstreamScheme": "http",
+        "ServiceName": "RestaurantService",
+        "UpstreamPathTemplate": "/api/restaurant/{everything}",
+        "UpstreamHttpMethod": [ "Get", "Post", "Put", "Delete" ],
+        "LoadBalancerOptions": {
+          "Type": "RoundRobin"
+        }
       }
     ],
     "GlobalConfiguration": {
         "RequestIdKey": "OcRequestId",
         "ServiceDiscoveryProvider": {
             "Host": "127.0.0.1",
-          "Port": 8500,
-          "Type": "Consul",
-          "PollingInterval": 10000,
-          "UseServiceAddress": true
+            "Port": 8500,
+            "Type": "Consul",
+            "PollingInterval": 10000,
+            "UseServiceAddress": true
         }
       }
   }

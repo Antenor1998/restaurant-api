@@ -1,44 +1,36 @@
+using Consul;
+using Microsoft.AspNetCore.Hosting.Server;
+using SharedKernel.lib.Services;
+
 var builder = WebApplication.CreateBuilder(args);
 
-// Add services to the container.
-// Learn more about configuring Swagger/OpenAPI at https://aka.ms/aspnetcore/swashbuckle
+
+builder.WebHost.UseKestrel().UseUrls("http://localhost:5010");
+
+builder.Services.AddSingleton<IConsulClient, ConsulClient>(p => new ConsulClient(cfg => {
+	cfg.Address = new Uri("http://127.0.0.1:8500");
+}));
+
+builder.Services.AddControllers();
 builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen();
 
 var app = builder.Build();
 
-// Configure the HTTP request pipeline.
-if (app.Environment.IsDevelopment())
-{
-    app.UseSwagger();
-    app.UseSwaggerUI();
-}
+var consulClient = app.Services.GetRequiredService<IConsulClient>();
+var server       = app.Services.GetRequiredService<IServer>();
+var lifetime     = app.Services.GetRequiredService<IHostApplicationLifetime>();
 
+app.Services.GetRequiredService<IHostApplicationLifetime>()
+	.ApplicationStarted.Register(() => {
+		var consulHostedService = new ConsulHostedService(consulClient, server, lifetime, "RestaurantService", 5010);
+		consulHostedService.StartAsync(default).GetAwaiter().GetResult();
+	});
+
+
+app.UseSwagger();
+app.UseSwaggerUI();
 app.UseHttpsRedirection();
-
-var summaries = new[]
-{
-    "Freezing", "Bracing", "Chilly", "Cool", "Mild", "Warm", "Balmy", "Hot", "Sweltering", "Scorching"
-};
-
-app.MapGet("/weatherforecast", () =>
-{
-    var forecast =  Enumerable.Range(1, 5).Select(index =>
-        new WeatherForecast
-        (
-            DateOnly.FromDateTime(DateTime.Now.AddDays(index)),
-            Random.Shared.Next(-20, 55),
-            summaries[Random.Shared.Next(summaries.Length)]
-        ))
-        .ToArray();
-    return forecast;
-})
-.WithName("GetWeatherForecast")
-.WithOpenApi();
+app.MapControllers();
 
 app.Run();
-
-record WeatherForecast(DateOnly Date, int TemperatureC, string? Summary)
-{
-    public int TemperatureF => 32 + (int)(TemperatureC / 0.5556);
-}

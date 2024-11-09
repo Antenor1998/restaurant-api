@@ -3,6 +3,7 @@ using Microsoft.AspNetCore.Hosting.Server;
 using Microsoft.AspNetCore.Hosting.Server.Features;
 using Microsoft.Extensions.Hosting;
 
+namespace TenantService.API.Application.Common.Services;
 public class ConsulHostedService : IHostedService
 {
 	private readonly IConsulClient _consulClient;
@@ -36,7 +37,7 @@ public class ConsulHostedService : IHostedService
 		{
 			ID = _registrationId,
 			Name = "TenantService",
-		    Address = "127.0.0.1",
+			Address = "127.0.0.1",
 			Port = uri.Port,
 			Tags = new[] { "api" }
 		};
