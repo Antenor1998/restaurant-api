@@ -37,6 +37,13 @@ jobs:
       with:
         dotnet-version: '8.0.x'
 
+    # Instalar Docker Compose
+    - name: Install Docker Compose
+      run: |
+        sudo apt update
+        sudo apt install -y docker-compose
+
+
     # 3. Clear NuGet cache to avoid package restore issues
     - name: Clear NuGet cache
       run: dotnet nuget locals --clear all
