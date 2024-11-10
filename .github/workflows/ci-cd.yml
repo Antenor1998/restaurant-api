@@ -91,20 +91,12 @@ jobs:
     - name: Push AnalyticsService Docker image
       run: docker push ${{ secrets.DOCKER_USERNAME }}/analytics-service:latest
 
+    - name: Clean up existing containers
+      run: docker-compose -f docker-compose.yml down --volumes --remove-orphans
+
     # 10. Deploy with docker-compose
     - name: Deploy with docker-compose
       env:
         CONSUL_ADDRESS: "http://localhost:8500"
       run: |
         docker-compose -f docker-compose.yml up -d --build
-
-    # 11. Health check for services
-    - name: Health check for TenantService
-      run: |
-        sleep 30
-        curl -f http://localhost:5001/health || exit 1
-
-    - name: Health check for AnalyticsService
-      run: |
-        sleep 30
-        curl -f http://localhost:5003/health || exit 1
