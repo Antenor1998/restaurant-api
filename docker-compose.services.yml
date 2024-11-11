@@ -1,0 +1,65 @@
+version: '3.8'
+
+networks:
+  my_network:
+    driver: bridge
+
+services:
+  tenant-service:
+    build:
+      context: .
+      dockerfile: ./src/Services/TenantService/TenantService.API/Dockerfile
+    container_name: tenant-service
+    ports:
+      - "5001:5001"
+    environment:
+      - CONSUL_ADDRESS=http://consul:8500
+      - SERVICE_NAME=TenantService
+    networks:
+      - my_network
+    healthcheck:
+      test: ["CMD-SHELL", "curl -f http://tenant-service:5001/health || exit 1"]
+      interval: 10s
+      timeout: 5s
+      retries: 5
+      start_period: 30s
+
+  analytics-service:
+    build:
+      context: .
+      dockerfile: ./src/Services/AnalyticsService/AnalyticsService.API/Dockerfile
+    container_name: analytics-service
+    ports:
+      - "5003:5003"
+    environment:
+      - CONSUL_ADDRESS=http://consul:8500
+    networks:
+      - my_network
+    healthcheck:
+      interval: 10s
+      timeout: 5s
+      retries: 5
+      start_period: 30s
+
+  api-gateway:
+    build:
+      context: .
+      dockerfile: ./ApiGateway/Dockerfile
+    container_name: api-gateway
+    ports:
+      - "5020:5000"
+    depends_on:
+      - tenant-service
+      - analytics-service
+    environment:
+      - CONSUL_ADDRESS=http://consul:8500
+    networks:
+      - my_network
+    healthcheck:
+      # test: ["CMD-SHELL", "curl -f http://localhost:5000/health || exit 1"]
+      interval: 10s
+      timeout: 5s
+      retries: 5
+      start_period: 30s
+    labels:
+      - "consul.service.name=api-gateway"

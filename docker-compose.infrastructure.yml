@@ -1,0 +1,45 @@
+version: '3.8'
+
+networks:
+  my_network:
+    driver: bridge
+
+services:
+  postgres:
+    image: postgres:15
+    container_name: postgres
+    environment:
+      POSTGRES_USER: postgres
+      POSTGRES_PASSWORD: E18080561
+      POSTGRES_DB: TenantDB
+    ports:
+      - "5432:5432"
+    networks:
+      - my_network
+    volumes:
+      - postgres_data:/var/lib/postgresql/data
+
+  rabbitmq:
+    image: rabbitmq:management
+    container_name: rabbitmq
+    environment:
+      RABBITMQ_DEFAULT_USER: guest
+      RABBITMQ_DEFAULT_PASS: guest
+    ports:
+      - "5672:5672"
+      - "15672:15672"
+    networks:
+      - my_network
+
+  consul:
+    image: hashicorp/consul:1.20.1
+    container_name: consul
+    command: agent -dev -client=0.0.0.0
+    ports:
+      - "8500:8500"
+      - "8600:8600/udp"
+    networks:
+      - my_network
+
+volumes:
+  postgres_data:

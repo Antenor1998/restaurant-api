@@ -3,7 +3,12 @@
       {
         "DownstreamPathTemplate": "/api/{everything}",
         "DownstreamScheme": "http",
-        "ServiceName": "TenantService",
+        "DownstreamHostAndPorts": [
+            {
+              "Host": "tenant-service",
+              "Port": 5001
+            }
+        ],
         "UpstreamPathTemplate": "/api/tenant/{everything}",
         "UpstreamHttpMethod": [ "Get", "Post", "Put", "Delete" ],
         "LoadBalancerOptions": {
@@ -104,11 +109,11 @@
     "GlobalConfiguration": {
         "RequestIdKey": "OcRequestId",
         "ServiceDiscoveryProvider": {
-            "Host": "127.0.0.1",
+            "Host": "consul",
             "Port": 8500,
             "Type": "Consul",
             "PollingInterval": 10000,
-            "UseServiceAddress": true
+            "UseServiceAddress": false
         }
       }
   }

@@ -4,7 +4,7 @@ using Microsoft.OpenApi.Models;
 using Ocelot.Provider.Consul;
 
 var builder = WebApplication.CreateBuilder(args);
-
+builder.WebHost.UseKestrel().UseUrls("http://*:5000");
 // Configuración de Ocelot y Consul
 builder.Configuration.AddJsonFile("ocelot.json", optional: false, reloadOnChange: true);
 

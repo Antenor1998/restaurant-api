@@ -1,3 +1,4 @@
+using System.Net;
 using Consul;
 using Microsoft.AspNetCore.Hosting.Server;
 using Microsoft.AspNetCore.Hosting.Server.Features;
@@ -21,23 +22,22 @@ public class ConsulHostedService : IHostedService {
 		_servicePort = servicePort;
 	}
 	public async Task StartAsync(CancellationToken cancellationToken) {
-		var features = _server.Features.Get<IServerAddressesFeature>();
-		var address = (features?.Addresses.FirstOrDefault()) ?? throw new InvalidOperationException("No se pudo obtener una dirección para registrar el servicio en Consul.");
+	 	var ipAddress = GetContainerIPAddress();
+    	if (string.IsNullOrEmpty(ipAddress)) {
+            throw new InvalidOperationException("No se pudo obtener la dirección IP del contenedor.");
+        }
 
-		var uri = new Uri(address);
-		var ipAddress = uri.Host == "0.0.0.0" ? "localhost" : uri.Host;
+        Console.WriteLine($"[INFO] Registrando servicio en Consul en la dirección {ipAddress}");
 
-		Console.WriteLine($"[INFO] Registrando servicio en Consul en la dirección {ipAddress}");
+        _registrationId = $"{_serviceName}-{ipAddress}-{_servicePort}";
 
-		_registrationId = $"{ipAddress}-{_servicePort}-{_serviceName}";
-		Console.WriteLine($"[INFO] Registrando servicio en Consul con ID {_registrationId}");
 
 
 		var registration = new AgentServiceRegistration {
-			ID = _registrationId,
-			Name = _serviceName,
-			Address = ipAddress,
-			Port = _servicePort,
+		    ID = _registrationId,
+            Name = _serviceName,
+            Address = ipAddress,
+            Port = _servicePort,
 			Tags = ["api"]
 		};
 
@@ -51,4 +51,20 @@ public class ConsulHostedService : IHostedService {
 	}
 
 	public Task StopAsync(CancellationToken cancellationToken) => Task.CompletedTask;
+
+
+	/// <summary>
+    /// Obtiene la dirección IP interna del contenedor.
+    /// </summary>
+    private string GetContainerIPAddress(){
+        try {
+            var hostName = Dns.GetHostName();
+            var addresses = Dns.GetHostAddresses(hostName);
+            return addresses.FirstOrDefault(ip => ip.AddressFamily == System.Net.Sockets.AddressFamily.InterNetwork)?.ToString();
+        }
+        catch (Exception ex) {
+            Console.WriteLine($"[ERROR] No se pudo obtener la dirección IP: {ex.Message}");
+            return null;
+        }
+    }
 }

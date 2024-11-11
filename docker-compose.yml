@@ -22,7 +22,6 @@ services:
     labels:
       - "consul.service.name=consul"
 
-
   rabbitmq:
     image: rabbitmq:management
     container_name: rabbitmq
@@ -54,6 +53,8 @@ services:
       - rabbitmq
     environment:
       - CONSUL_ADDRESS=http://consul:8500
+      - SERVICE_NAME=TenantService
+      - ConnectionStrings__DefaultConnection=Host=postgres;Port=5432;Database=TenantDB;Username=postgres;Password=E18080561
     networks:
       - my_network
     healthcheck:
@@ -82,3 +83,27 @@ services:
      timeout: 5s
      retries: 5
      start_period: 30s
+
+  api-gateway:
+    build:
+      context: .
+      dockerfile: ./ApiGateway/Dockerfile
+    container_name: api-gateway
+    ports:
+      - "5020:5000"
+    depends_on:
+      - consul
+      - tenant-service
+      - analytics-service
+    environment:
+      - CONSUL_ADDRESS=http://consul:8500
+    networks:
+      - my_network
+    healthcheck:
+      # test: ["CMD-SHELL", "curl -f http://localhost:5000/health || exit 1"]
+      interval: 10s
+      timeout: 5s
+      retries: 5
+      start_period: 30s
+    labels:
+      - "consul.service.name=api-gateway"

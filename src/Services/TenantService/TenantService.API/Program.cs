@@ -1,9 +1,14 @@
 using Consul;
 using Microsoft.AspNetCore.Hosting.Server;
+using Microsoft.EntityFrameworkCore;
 using SharedKernel.lib.Messaging;
 using SharedKernel.lib.Services;
+using TenantService.Infrastructure.Persistence.Context;
 
 var builder = WebApplication.CreateBuilder(args);
+var services = builder.Services;
+var configuration = builder.Configuration;
+
 
 builder.WebHost.UseKestrel().UseUrls("http://0.0.0.0:5001");
 var consulAddress = Environment.GetEnvironmentVariable("CONSUL_ADDRESS") ?? "http://consul:8500";
@@ -12,16 +17,13 @@ var consulAddress = Environment.GetEnvironmentVariable("CONSUL_ADDRESS") ?? "htt
 builder.Services.AddSingleton<IConsulClient, ConsulClient>(p => new ConsulClient(cfg => {
 	cfg.Address = new Uri(consulAddress);
 }));
+
 var eventBus = new RabbitMQEventBus("rabbitmq", "guest", "guest");
 builder.Services.AddSingleton<IEventBus>(eventBus);
 
-// builder.Services.AddHostedService<ConsulHostedService>(provider =>
-// {
-// 	var consulClient = provider.GetRequiredService<IConsulClient>();
-// 	var server = provider.GetRequiredService<IServer>();
-// 	var lifetime = provider.GetRequiredService<IHostApplicationLifetime>();
-// 	return new ConsulHostedService(consulClient, server, lifetime, "TenantService", 5001);
-// });
+services.AddDbContext<TenantDbContext>(options =>
+    options.UseNpgsql(configuration.GetConnectionString("DefaultConnection"))
+);
 
 builder.Services.AddControllers();
 builder.Services.AddEndpointsApiExplorer();
