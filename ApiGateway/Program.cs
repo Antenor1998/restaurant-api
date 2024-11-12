@@ -13,8 +13,7 @@ builder.Services.AddOcelot().AddConsul();
 
 // Configuración de Swagger para el API Gateway
 builder.Services.AddEndpointsApiExplorer();
-builder.Services.AddSwaggerGen(c =>
-{
+builder.Services.AddSwaggerGen(c => {
     c.SwaggerDoc("v1", new OpenApiInfo { Title = "API Gateway", Version = "v1" });
 });
 
