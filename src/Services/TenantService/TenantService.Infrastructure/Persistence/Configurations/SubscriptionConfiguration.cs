@@ -6,13 +6,29 @@ namespace TenantService.Infrastructure.Persistence.Configurations;
 
 public class SubscriptionConfiguration : IEntityTypeConfiguration<Subscription> {
 	public void Configure(EntityTypeBuilder<Subscription> builder) {
+		builder.ToTable("Subscriptions");
 
-		builder.HasKey(s => s.Id);
-		builder.Property(s => s.Amount).HasColumnType("decimal(18,2)");
-		builder.Property(s => s.IsActive).HasDefaultValue(true);
+		builder.HasKey(s => s.Id).HasName("id");
+		builder.Property(s => s.TenantId).HasColumnName("tenant_id");
+		builder.Property(s => s.PlanId).HasColumnName("plan_id");
+		builder.Property(x => x.Interval).HasColumnName("interval");
+		builder.Property(s => s.Status).HasColumnName("status");
+		builder.Property(s => s.StartDate).HasColumnName("start_date");
+		builder.Property(s => s.EndDate).HasColumnName("end_date");
+		builder.Property(s => s.TrialEndsAt).HasColumnName("trial_ends_at");
+		builder.Property(s => s.AutoRenewal).HasColumnName("auto_renewal");
+		builder.Property(s => s.TotalAmount).HasColumnName("total_amount");
+		builder.Property(s => s.Currency).HasColumnName("currency");
+		builder.Property(s => s.IsActive).HasColumnName("is_active");
 
-		builder.HasOne(s => s.Tenant)
-				.WithMany(t => t.Subscriptions)
-				.HasForeignKey(s => s.TenantId);
+		builder.HasOne(s => s.Plan)
+			   .WithMany(p => p.Subscriptions)
+			   .HasForeignKey(s => s.PlanId)
+			   .OnDelete(DeleteBehavior.Cascade);
+
+		// Subscription data
+		builder.HasData(
+			new Subscription { Id = 1, TenantId = 1, PlanId = 1, Interval = "monthly", Status = 1, StartDate = DateTime.Now, EndDate = DateTime.Now.AddMonths(1), TrialEndsAt = null, AutoRenewal = true, TotalAmount = 100, Currency = "MXM", IsActive = true }
+		);
 	}
 }

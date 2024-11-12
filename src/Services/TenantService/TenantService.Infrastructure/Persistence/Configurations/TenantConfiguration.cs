@@ -1,4 +1,3 @@
-
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Metadata.Builders;
 using TenantService.Domain.Entities;
@@ -7,15 +6,19 @@ namespace TenantService.Infrastructure.Persistence.Configurations;
 
 public class TenantConfiguration : IEntityTypeConfiguration<Tenant> {
 	public void Configure(EntityTypeBuilder<Tenant> builder) {
-		builder.HasKey(t => t.Id);
-		builder.Property(t => t.Name).IsRequired();
-		builder.Property(t => t.Name).IsRequired().HasMaxLength(100);
-		builder.Property(t => t.Domain).IsRequired().HasMaxLength(50);
-		builder.Property(t => t.Status).IsRequired();
-		builder.Property(t => t.CreatedAt).HasDefaultValueSql("NOW()");
+		builder.ToTable("Tenants");
 
-		builder.HasMany(t => t.Subscriptions)
-				.WithOne(s => s.Tenant)
-				.HasForeignKey(s => s.TenantId);
+		builder.HasKey(t => t.Id).HasName("id");
+
+		builder.Property(t => t.Name).IsRequired().HasColumnName("name");
+		builder.Property(t => t.BusinessName).IsRequired().HasColumnName("business_name");
+		builder.Property(t => t.DatabaseConnectionString).IsRequired().HasColumnName("database_connection_string");
+		builder.Property(t => t.Status).IsRequired().HasColumnName("status");
+		builder.Property(t => t.CreatedAt).HasColumnName("created_at");
+		builder.Property(t => t.TrialEndsAt).HasColumnName("trial_ends_at");
+
+		builder.HasData(
+			new Tenant { Id = 1, Name = "WerSoft", BusinessName = "WerSOft S.A de C.V", DatabaseConnectionString = "werSoft", Status = 1, CreatedAt = DateTime.Now, TrialEndsAt = DateTime.Now.AddMonths(1) }
+		);
 	}
 }

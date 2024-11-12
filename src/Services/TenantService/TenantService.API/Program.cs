@@ -22,7 +22,7 @@ var eventBus = new RabbitMQEventBus("rabbitmq", "guest", "guest");
 builder.Services.AddSingleton<IEventBus>(eventBus);
 
 services.AddDbContext<TenantDbContext>(options =>
-    options.UseNpgsql(configuration.GetConnectionString("DefaultConnection"))
+	options.UseNpgsql(configuration.GetConnectionString("DefaultConnection"))
 );
 
 builder.Services.AddControllers();
@@ -32,6 +32,11 @@ builder.Services.AddSwaggerGen();
 var app = builder.Build();
 
 app.MapGet("/health", () => "Healthy");
+
+using (var scope = app.Services.CreateScope()) {
+    var context = scope.ServiceProvider.GetRequiredService<TenantDbContext>();
+    context.Database.Migrate();
+}
 
 var consulClient = app.Services.GetRequiredService<IConsulClient>();
 var server       = app.Services.GetRequiredService<IServer>();
