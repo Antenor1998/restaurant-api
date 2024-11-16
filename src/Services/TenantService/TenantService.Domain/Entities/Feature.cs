@@ -8,6 +8,6 @@ public class Feature {
 	public DateTime CreatedAt { get; set; } = DateTime.UtcNow;
 	public DateTime UpdatedAt { get; set; } = DateTime.UtcNow;
 
-	public List<PlanFeature>? PlanFeatures { get; set; }
-    public List<AddOnFeature>? AddOnFeatures { get; set; }
+	public virtual ICollection<PlanFeature>? PlanFeatures { get; set; }
+    public virtual ICollection<AddOnFeature>? AddOnFeatures { get; set; }
 }

@@ -10,5 +10,5 @@ public class Tenant {
 	public DateTime CreatedAt { get; set; }
 	public DateTime? TrialEndsAt { get; set; }
 
-	public Subscription? Subscription { get; set; }
+	public virtual ICollection<TenantSubscription>? Subscriptions { get; set; }
 }

@@ -16,7 +16,7 @@ builder.Services.AddSingleton<IConsulClient, ConsulClient>(p => new ConsulClient
 var eventBus = new RabbitMQEventBus("rabbitmq", "guest", "guest");
 builder.Services.AddSingleton<IEventBus>(eventBus);
 
-builder.Services.AddControllers();
+var addControllers = builder.Services.AddControllers();
 builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen();
 

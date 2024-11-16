@@ -115,5 +115,5 @@
             "PollingInterval": 10000,
             "UseServiceAddress": false
         }
-      }
-  }
+    }
+}

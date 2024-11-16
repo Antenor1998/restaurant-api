@@ -6,45 +6,37 @@ using Microsoft.Extensions.Hosting;
 
 namespace SharedKernel.lib.Services;
 
-public class ConsulHostedService : IHostedService {
-	private readonly IConsulClient _consulClient;
-	private readonly IServer _server;
-	private readonly IHostApplicationLifetime _lifetime;
-	private readonly string _serviceName;
-	private readonly int _servicePort;
-	private string _registrationId;
+public class ConsulHostedService(IConsulClient consulClient,
+								 IServer server,
+								 IHostApplicationLifetime lifetime,
+								 string serviceName,
+								 int servicePort) : IHostedService {
 
-	public ConsulHostedService(IConsulClient consulClient, IServer server, IHostApplicationLifetime lifetime, string serviceName, int servicePort) {
-		_consulClient = consulClient;
-		_server = server;
-		_lifetime = lifetime;
-		_serviceName = serviceName;
-		_servicePort = servicePort;
-	}
+	private readonly IServer _server = server;
+	private string? _registrationId;
+
 	public async Task StartAsync(CancellationToken cancellationToken) {
-	 	var ipAddress = GetContainerIPAddress();
+	 	var ipAddress = GetContainerIpAddress();
     	if (string.IsNullOrEmpty(ipAddress)) {
             throw new InvalidOperationException("No se pudo obtener la dirección IP del contenedor.");
         }
 
         Console.WriteLine($"[INFO] Registrando servicio en Consul en la dirección {ipAddress}");
 
-        _registrationId = $"{_serviceName}-{ipAddress}-{_servicePort}";
-
-
+        _registrationId = $"{serviceName}-{ipAddress}-{servicePort}";
 
 		var registration = new AgentServiceRegistration {
 		    ID = _registrationId,
-            Name = _serviceName,
+            Name = serviceName,
             Address = ipAddress,
-            Port = _servicePort,
+            Port = servicePort,
 			Tags = ["api"]
 		};
 
-		await _consulClient.Agent.ServiceRegister(registration, cancellationToken);
+		await consulClient.Agent.ServiceRegister(registration, cancellationToken);
 
-		_lifetime.ApplicationStopping.Register(async () => {
-			await _consulClient.Agent.ServiceDeregister(_registrationId);
+		lifetime.ApplicationStopping.Register(async () => {
+			await consulClient.Agent.ServiceDeregister(_registrationId);
 		});
 
 		 Console.WriteLine($"Servicio registrado en Consul con ID {_registrationId}");
@@ -56,7 +48,7 @@ public class ConsulHostedService : IHostedService {
 	/// <summary>
     /// Obtiene la dirección IP interna del contenedor.
     /// </summary>
-    private string GetContainerIPAddress(){
+    private static string? GetContainerIpAddress(){
         try {
             var hostName = Dns.GetHostName();
             var addresses = Dns.GetHostAddresses(hostName);

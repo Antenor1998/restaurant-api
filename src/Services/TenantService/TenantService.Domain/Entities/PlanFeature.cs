@@ -7,6 +7,6 @@ public class PlanFeature {
 	public int? LimitValue { get; set; }
 	public bool IsUnlimited { get; set; } = false;
 
-	public Plan? Plan { get; set; }
-	public Feature? Feature { get; set; }
+	public virtual Plan? Plan { get; set; }
+	public virtual Feature? Feature { get; set; }
 }

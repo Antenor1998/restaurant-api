@@ -5,7 +5,7 @@ namespace TenantService.Infrastructure.Persistence.Context;
 
 public class TenantDbContext : DbContext {
 	public const string DEFAULT_SCHEMA = "tenant";
-	public const string BOLLING_SCHEMA = "billing";
+	public const string BILLING_SCHEMA = "billing";
 
 	public DbSet<Feature> Features { get; set; }
 	public DbSet<Plan> Plans { get; set; }
@@ -13,7 +13,7 @@ public class TenantDbContext : DbContext {
 	public DbSet<AddOn> AddOns { get; set; }
 	public DbSet<AddOnFeature> AddOnFeatures { get; set; }
 	public DbSet<Pricing> Pricings { get; set; }
-	public DbSet<Subscription> Subscriptions { get; set; }
+	public DbSet<TenantSubscription> Subscriptions { get; set; }
 
 	public TenantDbContext(DbContextOptions<TenantDbContext> options) : base(options) { }
 
@@ -21,6 +21,8 @@ public class TenantDbContext : DbContext {
 		base.OnModelCreating(modelBuilder);
 		modelBuilder.ApplyConfigurationsFromAssembly(typeof(TenantDbContext).Assembly);
 		modelBuilder.HasDefaultSchema(DEFAULT_SCHEMA);
+		
+		
 	}
 
 }

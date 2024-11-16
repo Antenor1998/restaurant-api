@@ -1,4 +1,4 @@
-namespace SharedKernel.lib.Messaging;
+namespace SharedKernel.lib.Events;
 
 public abstract class IntegrationEvent {
 	 public Guid Id { get; private set; }

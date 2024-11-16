@@ -1,6 +1,6 @@
 namespace TenantService.Domain.Entities;
 
-public class Subscription {
+public class TenantSubscription {
 	public int Id { get; set; }
 	public int TenantId { get; set; }
 	public int PlanId { get; set; }
@@ -14,5 +14,6 @@ public class Subscription {
 	public string Currency { get; set; } = "MXN";
 	public bool IsActive { get; set; } = true;
 
-	public Plan? Plan { get; set; }
+	public virtual Plan? Plan { get; set; }
+	public virtual Tenant? Tenant { get; set; }
 }

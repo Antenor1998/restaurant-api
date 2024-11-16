@@ -12,10 +12,11 @@ public class TenantSubscription {
     public bool AutoRenewal { get; set; } = true;
     public string Status { get; set; } = "Active";
     public decimal TotalAmount { get; set; }
-    public string Currency { get; set; } = "USD";
+    public string Currency { get; set; } = "MXM";
     public int ExtraUsers { get; set; } = 0;
     public DateTime CreatedAt { get; set; } = DateTime.UtcNow;
     public DateTime? UpdatedAt { get; set; }
+    
     public Tenant? Tenant { get; set; }
     public Plan? Plan { get; set; }
 }

@@ -7,8 +7,5 @@ public class Pricing {
 	public string Interval { get; set; } = "monthly";
 	public decimal Price { get; set; }
 	public string Currency { get; set; } = "MXN";
-	public int DiscountPercentage { get; set; }
-
-	public Plan? Plan { get; set; }
-	public AddOn? AddOn { get; set; }
+	public int DiscountPercentage { get; set; }	
 }

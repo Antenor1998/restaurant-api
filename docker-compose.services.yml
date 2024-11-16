@@ -15,6 +15,7 @@ services:
     environment:
       - CONSUL_ADDRESS=http://consul:8500
       - SERVICE_NAME=TenantService
+      - ConnectionStrings__DefaultConnection=Host=postgres;Port=5432;Database=TenantDB;Username=postgres;Password=E18080561
     networks:
       - my_network
     healthcheck:
@@ -35,11 +36,6 @@ services:
       - CONSUL_ADDRESS=http://consul:8500
     networks:
       - my_network
-    healthcheck:
-      interval: 10s
-      timeout: 5s
-      retries: 5
-      start_period: 30s
 
   api-gateway:
     build:
@@ -55,11 +51,5 @@ services:
       - CONSUL_ADDRESS=http://consul:8500
     networks:
       - my_network
-    healthcheck:
-      # test: ["CMD-SHELL", "curl -f http://localhost:5000/health || exit 1"]
-      interval: 10s
-      timeout: 5s
-      retries: 5
-      start_period: 30s
     labels:
       - "consul.service.name=api-gateway"

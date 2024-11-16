@@ -6,9 +6,9 @@ using System.Text.Json;
 using System.Threading.Tasks;
 using RabbitMQ.Client;
 
-namespace SharedKernel.lib.Messaging;
+namespace SharedKernel.lib.Events;
 
-public class RabbitMQEventBus : IEventBus {
+public class RabbitMQEventBus : IEventBus, IDisposable {
 	private readonly ConnectionFactory _factory;
 	private IConnection? _connection;
 	private IChannel? _channel;

@@ -1,14 +1,17 @@
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Metadata.Builders;
 using TenantService.Domain.Entities;
+using TenantService.Infrastructure.Persistence.Context;
 
 namespace TenantService.Infrastructure.Persistence.Configurations;
 
-public class SubscriptionConfiguration : IEntityTypeConfiguration<Subscription> {
-	public void Configure(EntityTypeBuilder<Subscription> builder) {
-		builder.ToTable("Subscriptions");
+public class TenantSubscriptionConfiguration : IEntityTypeConfiguration<TenantSubscription> {
+	public void Configure(EntityTypeBuilder<TenantSubscription> builder) {
+		builder.ToTable("TenantsSubscriptions", TenantDbContext.BILLING_SCHEMA, t => t.ExcludeFromMigrations());
 
-		builder.HasKey(s => s.Id).HasName("id");
+		builder.HasKey(s => s.Id);
+		
+		builder.Property(a => a.Id).HasColumnName("id");
 		builder.Property(s => s.TenantId).HasColumnName("tenant_id");
 		builder.Property(s => s.PlanId).HasColumnName("plan_id");
 		builder.Property(x => x.Interval).HasColumnName("interval");
@@ -22,13 +25,13 @@ public class SubscriptionConfiguration : IEntityTypeConfiguration<Subscription> 
 		builder.Property(s => s.IsActive).HasColumnName("is_active");
 
 		builder.HasOne(s => s.Plan)
-			   .WithMany(p => p.Subscriptions)
+			   .WithMany(p => p.TenantSubscriptions)
 			   .HasForeignKey(s => s.PlanId)
 			   .OnDelete(DeleteBehavior.Cascade);
 
 		// Subscription data
 		builder.HasData(
-			new Subscription { Id = 1, TenantId = 1, PlanId = 1, Interval = "monthly", Status = 1, StartDate = DateTime.Now, EndDate = DateTime.Now.AddMonths(1), TrialEndsAt = null, AutoRenewal = true, TotalAmount = 100, Currency = "MXM", IsActive = true }
+			// new Subscription { Id = 1, TenantId = 1, PlanId = 1, Interval = "monthly", Status = 1, StartDate = DateTime.Now, EndDate = DateTime.Now.AddMonths(1), TrialEndsAt = null, AutoRenewal = true, TotalAmount = 100, Currency = "MXM", IsActive = true }
 		);
 	}
 }

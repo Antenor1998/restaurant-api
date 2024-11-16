@@ -9,6 +9,5 @@ public class AddOn {
 	public DateTime CreatedAt { get; set; } = DateTime.UtcNow;
 	public DateTime UpdatedAt { get; set; } = DateTime.UtcNow;
 
-	public List<AddOnFeature>? AddOnFeatures { get; set; }
-    public List<Pricing>? Pricings { get; set; }
+	public virtual ICollection<AddOnFeature>? AddOnFeatures { get; set; }
 }

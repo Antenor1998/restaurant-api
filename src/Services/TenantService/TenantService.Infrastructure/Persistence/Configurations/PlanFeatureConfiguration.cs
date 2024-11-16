@@ -1,14 +1,16 @@
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Metadata.Builders;
 using TenantService.Domain.Entities;
+using TenantService.Infrastructure.Persistence.Context;
 
 namespace TenantService.Infrastructure.Persistence.Configurations;
 
 public class PlanFeatureConfiguration : IEntityTypeConfiguration<PlanFeature> {
 	public void Configure(EntityTypeBuilder<PlanFeature> builder) {
-		builder.ToTable("PlanFeatures");
+		builder.ToTable("PlanFeatures", TenantDbContext.DEFAULT_SCHEMA);
+		builder.HasKey(pf => pf.Id);
 
-		builder.HasKey(pf => pf.Id).HasName("id");
+		builder.Property(pf => pf.Id).HasColumnName("id");
 		builder.Property(pf => pf.PlanId).IsRequired().HasColumnName("plan_id");
 		builder.Property(pf => pf.FeatureId).IsRequired().HasColumnName("feature_id");
 		builder.Property(pf => pf.LimitValue).HasColumnName("limit_value");

@@ -10,7 +10,6 @@ public class Plan {
 	public DateTime CreatedAt { get; set; } = DateTime.UtcNow;
 	public DateTime UpdatedAt { get; set; } = DateTime.UtcNow;
 
-	public List<PlanFeature>? PlanFeatures { get; set; }
-	public List<Pricing> Pricings { get; set; } = [];
-	public List<Subscription>? Subscriptions { get; set; }
+	public virtual ICollection<PlanFeature>? PlanFeatures { get; set; }
+	public virtual ICollection<TenantSubscription>? TenantSubscriptions { get; set; }
 }
